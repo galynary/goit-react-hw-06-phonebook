@@ -1,20 +1,25 @@
-import { useState } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import { Form, Label, Input, Button } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact, getContacts } from 'redux/contactSlice';
 
-export const ContactForm = ({ handleSubmit }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleChange = evt => {
-    switch (evt.target.name) {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    switch (name) {
       case 'name':
-        setName(evt.target.value);
+        setName(value);
         break;
       case 'number':
-        setNumber(evt.target.value);
+        setNumber(value);
         break;
       default:
         return;
@@ -23,20 +28,28 @@ export const ContactForm = ({ handleSubmit }) => {
 
   const handleSubmitForm = e => {
     e.preventDefault();
+    if (
+      contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      setErrorMessage('OOPs..Contact already exists');
+      return;
+    } else {
+      dispatch(addContact({ id: nanoid(4), name, number }));
+      resetForm();
+    }
+  };
 
-    const newContact = {
-      id: nanoid(),
-      name: name,
-      number: number,
-    };
-
-    handleSubmit(newContact);
+  const resetForm = () => {
     setName('');
     setNumber('');
+    setErrorMessage('');
   };
 
   return (
     <Form onSubmit={handleSubmitForm}>
+      {errorMessage && <p>{errorMessage}</p>}
       <Label>
         Name
         <Input
@@ -49,7 +62,7 @@ export const ContactForm = ({ handleSubmit }) => {
           required
         />
       </Label>
-      <Label>
+      <Label htmlFor="">
         Number
         <Input
           value={number}
@@ -64,8 +77,4 @@ export const ContactForm = ({ handleSubmit }) => {
       <Button type="submit">Add contact</Button>
     </Form>
   );
-};
-
-ContactForm.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
 };
