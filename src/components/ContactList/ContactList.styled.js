@@ -1,11 +1,12 @@
 import styled from 'styled-components';
+import { theme } from '../../styles/theme';
 
 export const List = styled.ul`
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 20px;
-  background-color: white;
+  gap: ${theme.gap[3]};
+  padding: ${theme.padding[2]}px;
+  background-color: ${theme.colors.white};
 `;
 
 export const Item = styled.li`
@@ -13,16 +14,16 @@ export const Item = styled.li`
   align-items: baseline;
   justify-content: space-between;
   width: 100%;
-  gap: 20px;
+  gap: ${theme.gap[3]};
 `;
 
 export const DeleteButton = styled.button`
-  background-color: darkcyan;
-  padding: 5px;
-  color: white;
-  border: none;
+  background-color: ${theme.colors.green};
+  padding: 10px 20px;
+  color: ${theme.colors.white};
+  border-radius: 10px;
   transition: transform 300ms ease-in-out;
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 `;
