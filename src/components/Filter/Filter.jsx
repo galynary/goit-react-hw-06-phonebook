@@ -12,10 +12,11 @@ export function Filter() {
   };
   return (
     <FilterWrapper>
-      <Label>
+      <Label htmlFor="">
         Find name
         <Input
           type="text"
+          name="filter"
           value={filterValue}
           onChange={onChange}
           placeholder=" "

@@ -15,7 +15,7 @@ export const Label = styled.label`
 
 export const Input = styled.input`
   border: 1px solid ${theme.colors.green};
-  padding: 15px 0px;
+  padding: ${theme.padding[2]}px;
   width: 100%;
   display: block;
   margin-left: auto;
